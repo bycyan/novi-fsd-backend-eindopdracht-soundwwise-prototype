@@ -26,18 +26,24 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task, @RequestParam int userId, @RequestParam int projectId) {
-        User user = userService.getUserById(userId);
-        Project project = projectService.getProjectById(projectId);
-        if (user != null && project != null) {
-            task.setUser(user);
-            task.setProject(project);
-            Task createdTask = taskService.createTask(task);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+        Task createdTask = taskService.createTask(task);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
+
+//    @PostMapping
+//    public ResponseEntity<Task> createTask(@RequestBody Task task, @RequestParam int userId, @RequestParam int projectId) {
+//        User user = userService.getUserById(userId);
+//        Project project = projectService.getProjectById(projectId);
+//        if (user != null && project != null) {
+//            task.setUser(user);
+//            task.setProject(project);
+//            Task createdTask = taskService.createTask(task);
+//            return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
