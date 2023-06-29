@@ -1,6 +1,14 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "song_item")
 public class Song {
+
+    @Id
     private int songId;
     private String title;
     private String artist;
@@ -9,6 +17,10 @@ public class Song {
         this.songId = songId;
         this.title = title;
         this.artist = project.getProjectArtist();
+    }
+
+    public Song() {
+
     }
 
     // Getters and setters for songId, title, and artist

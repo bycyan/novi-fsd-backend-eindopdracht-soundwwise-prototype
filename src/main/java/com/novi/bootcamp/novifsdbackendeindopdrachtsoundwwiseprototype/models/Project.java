@@ -1,16 +1,34 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "projects")
 public class Project {
+
+    @Id
     private int projectId;
     private String projectName;
     private String projectArtist;
     private String projectImage;
-    private final List<Song> songItems;
-    private final List<ContentItem> contentItems;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Song> songItems;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ContentItem> contentItems;
+
+    @ElementCollection
     private final List<String> contributors;
+
+    public Project(){
+        this.songItems = new ArrayList<>();
+        this.contentItems = new ArrayList<>();
+        this.contributors = new ArrayList<>();
+    }
 
     public Project(int projectId, String projectName, String projectArtist, String projectImage) {
         this.projectId = projectId;
@@ -99,13 +117,20 @@ public class Project {
     }
 
     // Inner class: ContentItem
+    @Entity
+    @Table(name = "content_items")
     public static class ContentItem {
+        @Id
         private int contentItemId;
         private String contentItemName;
 
         public ContentItem(int contentItemId, String contentItemName) {
             this.contentItemId = contentItemId;
             this.contentItemName = contentItemName;
+        }
+
+        public ContentItem() {
+
         }
 
         // ContentItem getters and setters
