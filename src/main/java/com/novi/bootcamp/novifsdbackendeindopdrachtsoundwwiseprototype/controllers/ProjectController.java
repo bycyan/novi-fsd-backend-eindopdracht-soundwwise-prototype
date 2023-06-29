@@ -21,9 +21,25 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    //Retrieve all projects: Endpoint: GET /projects
+    //Retrieve a specific project by ID: Endpoint: GET /projects/{projectId}
+
     @PostMapping
     public ResponseEntity<Project> createProject(@RequestBody Project project) {
         Project createdProject = projectService.createProject(project);
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
+
+    //Update an existing project: Endpoint: PUT /projects/{projectId}
+
+    //Song
+    //Retrieve all songs for a specific project: Endpoint: GET /projects/{projectId}/songs
+    //Add a song to a project: Endpoint: POST /projects/{projectId}/songs, Request Body: JSON representation of the song object
+    //Remove a song from a project: Endpoint: DELETE /projects/{projectId}/songs/{songId}
+
+    //Content
+    //Retrieve all content items for a specific project: Endpoint: GET /projects/{projectId}/contentItems
+    //Add a content item to a project: Endpoint: POST /projects/{projectId}/contentItems
+    //Remove a content item from a project: Endpoint: DELETE /projects/{projectId}/contentItems/{contentItemId}
+
 }
