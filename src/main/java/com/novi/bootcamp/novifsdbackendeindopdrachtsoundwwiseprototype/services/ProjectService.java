@@ -1,4 +1,4 @@
-package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.sevices;
+package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services;
 
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositories.ProjectRepository;
@@ -19,4 +19,7 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    public Project getProjectById(int projectId) {
+        return projectRepository.findById(projectId).orElse(null);
+    }
 }

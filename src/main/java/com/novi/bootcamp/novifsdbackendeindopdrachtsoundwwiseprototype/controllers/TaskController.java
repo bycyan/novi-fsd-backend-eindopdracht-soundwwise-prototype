@@ -1,7 +1,11 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controllers;
 
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Task;
-import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.sevices.TaskService;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.User;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.TaskService;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +16,27 @@ import java.util.List;
 @RequestMapping("/tasks")
 public class TaskController {
     private final TaskService taskService;
+    private final UserService userService;
+    private final ProjectService projectService;
 
-    public TaskController(TaskService taskService){
+    public TaskController(TaskService taskService, UserService userService, ProjectService projectService){
         this.taskService = taskService;
+        this.userService = userService;
+        this.projectService = projectService;
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task){
-        Task createdTask = taskService.createTask(task);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
+    public ResponseEntity<Task> createTask(@RequestBody Task task, @RequestParam int userId, @RequestParam int projectId) {
+        User user = userService.getUserById(userId);
+        Project project = projectService.getProjectById(projectId);
+        if (user != null && project != null) {
+            task.setUser(user);
+            task.setProject(project);
+            Task createdTask = taskService.createTask(task);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping

@@ -1,8 +1,7 @@
-package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.sevices;
+package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services;
 
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Task;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositories.TaskRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,16 +21,11 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks() {
-        return tasks;
+        return taskRepository.findAll();
     }
 
     public Task getTaskById(int taskId) {
-        for (Task task : tasks) {
-            if (task.getTaskId() == taskId) {
-                return task;
-            }
-        }
-        return null;
+        return taskRepository.findById(taskId).orElse(null);
     }
 
     public void updateTask(Task task) {

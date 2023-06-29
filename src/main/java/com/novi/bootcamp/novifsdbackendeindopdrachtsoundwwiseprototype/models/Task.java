@@ -1,7 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -16,14 +15,17 @@ public class Task {
     private LocalDate dueDate;
 
     @ManyToOne
-    @JoinColumn(name = "project.id")
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
-    public Task(){
-
+    public Task() {
     }
 
-    public Task(int taskId, String taskName, LocalDate dueDate){
+    public Task(int taskId, String taskName, LocalDate dueDate) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.dueDate = dueDate;
@@ -59,6 +61,14 @@ public class Task {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Project getProject() {
