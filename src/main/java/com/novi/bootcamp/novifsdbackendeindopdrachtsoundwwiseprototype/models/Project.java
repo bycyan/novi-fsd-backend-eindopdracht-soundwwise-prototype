@@ -22,13 +22,13 @@ public class Project {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "project")
     private List<Song> songItems;
 
     @ElementCollection
     private final List<String> contributors;
 
-    public Project(){
+    public Project() {
         this.songItems = new ArrayList<>();
         this.contributors = new ArrayList<>();
     }
@@ -114,5 +114,23 @@ public class Project {
 
     public void setSongItems(List<Song> songItems) {
         this.songItems = songItems;
+        setProjectIdForSongs();
+        updateSongArtists();
+    }
+
+    private void setProjectIdForSongs() {
+        if (songItems != null) {
+            for (Song song : songItems) {
+                song.setProject(this);
+            }
+        }
+    }
+
+    private void updateSongArtists() {
+        if (songItems != null) {
+            for (Song song : songItems) {
+                song.setArtist(this.projectArtist);
+            }
+        }
     }
 }

@@ -1,9 +1,7 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "songs")
@@ -15,10 +13,16 @@ public class Song {
     private String title;
     private String artist;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    @JsonIgnore
+    private Project project;
+
     public Song(int songId, String title, String artist, Project project) {
         this.songId = songId;
         this.title = title;
         this.artist = project.getProjectArtist();
+        this.project = project;
     }
 
     public Song() {
@@ -49,6 +53,14 @@ public class Song {
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
 
