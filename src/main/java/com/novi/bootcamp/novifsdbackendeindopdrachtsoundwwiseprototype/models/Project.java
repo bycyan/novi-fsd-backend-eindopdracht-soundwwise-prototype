@@ -1,5 +1,7 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.ProjectDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,15 +18,10 @@ public class Project {
     private String projectArtist;
     private String projectImage;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToMany
-    @JoinTable(name = "user_project",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Song> songItems;
@@ -41,11 +38,12 @@ public class Project {
         this.contributors = new ArrayList<>();
     }
 
-    public Project(int projectId, String projectName, String projectArtist, String projectImage) {
+    public Project(int projectId, String projectName, String projectArtist, String projectImage, User user) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectArtist = projectArtist;
         this.projectImage = projectImage;
+        this.user = user;
         this.songItems = new ArrayList<>();
         this.contentItems = new ArrayList<>();
         this.contributors = new ArrayList<>();
@@ -127,6 +125,22 @@ public class Project {
         this.projectImage = projectImage;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setSongItems(List<Song> songItems) {
+        this.songItems = songItems;
+    }
+
+    public void setContentItems(List<ContentItem> contentItems) {
+        this.contentItems = contentItems;
+    }
+
     // Inner class: ContentItem
     @Entity
     @Table(name = "content_items")
@@ -161,5 +175,17 @@ public class Project {
         public void setContentItemName(String contentItemName) {
             this.contentItemName = contentItemName;
         }
+    }
+
+    // Convert Project to ProjectDTO
+    public ProjectDTO convertToDTO() {
+        ProjectDTO dto = new ProjectDTO();
+        dto.setProjectId(this.getProjectId());
+        dto.setProjectName(this.getProjectName());
+        dto.setProjectArtist(this.getProjectArtist());
+        dto.setProjectImage(this.getProjectImage());
+        dto.setUserId(this.getUser().getId()); // Set the user ID
+
+        return dto;
     }
 }

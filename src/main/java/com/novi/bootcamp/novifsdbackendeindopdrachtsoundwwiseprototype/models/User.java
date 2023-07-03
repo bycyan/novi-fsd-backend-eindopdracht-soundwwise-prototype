@@ -143,5 +143,7 @@ public class User {
         this.posts = posts;
     }
 
-    //Just for the git test
+    public int getId() {
+        return userId;
+    }
 }
