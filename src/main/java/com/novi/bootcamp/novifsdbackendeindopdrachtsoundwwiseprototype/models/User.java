@@ -142,4 +142,6 @@ public class User {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
+
+    //Just for the git test
 }
