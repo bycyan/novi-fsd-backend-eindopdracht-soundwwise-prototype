@@ -51,41 +51,27 @@ package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controll
 
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositories.ProjectRepository;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/projects")
 public class ProjectController {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
     @Autowired
-    public ProjectController(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public ProjectController(ProjectService projectService, ProjectRepository projectRepository) {
+        this.projectService = projectService;
     }
-
-    @GetMapping
-    public ResponseEntity<List<Project>> getAllProjects() {
-        List<Project> projects = projectRepository.findAll();
-        return new ResponseEntity<>(projects, HttpStatus.OK);
-    }
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Project> getProjectById(@PathVariable("id") int id) {
-//        Optional<Project> project = projectRepository.findById(id);
-//        return new ResponseEntity<>(project, HttpStatus.OK);
-//    }
 
     @PostMapping
     public ResponseEntity<Project> createProject(@RequestBody Project project) {
-        Project createdProject = projectRepository.save(project);
-        return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
+        Project createdProject = projectService.createProject(project);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProject);
     }
 
 //    @PutMapping("/{id}")
