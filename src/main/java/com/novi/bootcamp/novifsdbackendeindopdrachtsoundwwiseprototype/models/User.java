@@ -21,6 +21,9 @@ public class User {
     private List<Project> showcaseProjects;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Project> projects;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -114,6 +117,14 @@ public class User {
 
     public void setShowcaseProjects(List<Project> showcaseProjects) {
         this.showcaseProjects = showcaseProjects;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
     public List<Task> getTasks() {
