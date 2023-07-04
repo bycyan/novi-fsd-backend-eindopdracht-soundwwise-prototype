@@ -1,7 +1,5 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.ProjectDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -25,19 +23,24 @@ public class Project {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "project")
     private List<Song> songItems;
 
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "project")
+    private List<File> fileItems;
+
     @ElementCollection
     private final List<String> contributors;
 
     public Project() {
+        this.fileItems = new ArrayList<>();
         this.songItems = new ArrayList<>();
         this.contributors = new ArrayList<>();
     }
 
-    public Project(String projectName, String projectArtist, String projectImage, User user) {
+    public Project(String projectName, String projectArtist, String projectImage, User user, List<File> fileItems) {
         this.projectName = projectName;
         this.projectArtist = projectArtist;
         this.projectImage = projectImage;
         this.user = user;
+        this.fileItems = new ArrayList<>();
         this.songItems = new ArrayList<>();
         this.contributors = new ArrayList<>();
     }
@@ -54,6 +57,19 @@ public class Project {
 
     public List<Song> getSongItems() {
         return songItems;
+    }
+
+    //File Items
+    public void addFileItem(File file){
+        fileItems.add(file);
+    }
+
+    public void removeFileItem(File file){
+        fileItems.remove(file);
+    }
+
+    public List<File> getSongItem(){
+        return fileItems;
     }
 
     // Contributors
