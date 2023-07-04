@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controllers;
 
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.PostDTO;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Post;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,12 @@ public class PostController {
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         Post createdPost = postService.createPost(post);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<PostDTO.CommentDTO> createComment(@PathVariable Long postId, @RequestBody PostDTO.CommentDTO commentDTO) {
+        PostDTO.CommentDTO createdComment = postService.createComment(postId, commentDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
     @DeleteMapping("/{id}")

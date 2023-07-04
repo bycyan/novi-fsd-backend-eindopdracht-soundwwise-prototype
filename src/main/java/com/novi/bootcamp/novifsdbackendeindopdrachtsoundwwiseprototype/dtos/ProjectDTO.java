@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos;
 
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Post;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class ProjectDTO {
     private String projectArtist;
     private String projectImage;
     private List<SongDTO> songItems;
-    private List<ContentItemDTO> contentItems;
+    private List<PostDTO> contentItems;
     private List<String> contributors;
     private int userId;
 
@@ -22,7 +23,7 @@ public class ProjectDTO {
     }
 
     public ProjectDTO(int projectId, String projectName, String projectArtist, String projectImage,
-                      List<SongDTO> songItems, List<ContentItemDTO> contentItems, List<String> contributors,
+                      List<SongDTO> songItems, List<PostDTO> contentItems, List<String> contributors,
                       int userId) {
         this.projectId = projectId;
         this.projectName = projectName;
@@ -74,11 +75,11 @@ public class ProjectDTO {
         this.songItems = songItems;
     }
 
-    public List<ContentItemDTO> getContentItems() {
+    public List<PostDTO> getContentItems() {
         return contentItems;
     }
 
-    public void setContentItems(List<ContentItemDTO> contentItems) {
+    public void setContentItems(List<PostDTO> contentItems) {
         this.contentItems = contentItems;
     }
 

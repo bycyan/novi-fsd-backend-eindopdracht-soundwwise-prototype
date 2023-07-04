@@ -11,7 +11,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long postId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -35,11 +35,11 @@ public class Post {
     // Getters and Setters
 
     public Long getId() {
-        return id;
+        return postId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.postId = id;
     }
 
     public User getUser() {
@@ -74,84 +74,22 @@ public class Post {
         this.likes = likes;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    // Additional methods
-
     public void like() {
         this.likes++;
     }
 
-    public void addComment(User user, String content) {
-        Comment comment = new Comment(this, user, content);
+    public void addComment(String content, User user) {
+        Comment comment = new Comment(content, user, this); // Pass 'this' as the 'Post' object
         comments.add(comment);
+        comment.setPost(this); // Establishing bidirectional relationship
     }
 
-    @Entity
-    public static class Comment {
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setPost(null); // Clearing bidirectional relationship
+    }
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        @ManyToOne
-        @JoinColumn(name = "post_id")
-        private Post post;
-
-        @ManyToOne
-        @JoinColumn(name = "user_id")
-        private User user;
-
-        @Column(nullable = false)
-        private String content;
-
-        // Constructors, getters, and setters
-
-        public Comment() {
-        }
-
-        public Comment(Post post, User user, String content) {
-            this.post = post;
-            this.user = user;
-            this.content = content;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public Post getPost() {
-            return post;
-        }
-
-        public void setPost(Post post) {
-            this.post = post;
-        }
-
-        public User getUser() {
-            return user;
-        }
-
-        public void setUser(User user) {
-            this.user = user;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
+    public List<Comment> getComments() {
+        return comments;
     }
 }

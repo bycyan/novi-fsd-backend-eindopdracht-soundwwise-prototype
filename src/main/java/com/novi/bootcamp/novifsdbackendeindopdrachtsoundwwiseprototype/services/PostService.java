@@ -1,10 +1,16 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services;
 
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.PostDTO;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.UserDTO;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Comment;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Post;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.User;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositories.PostRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +18,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private UserDTO user;
 
     @Autowired
     public PostService(PostRepository postRepository) {
@@ -37,5 +44,33 @@ public class PostService {
     public Post updatePost(Post post) {
         return postRepository.save(post);
     }
+
+    //
+
+    public PostDTO.CommentDTO createComment(Long postId, PostDTO.CommentDTO commentDTO) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+
+            Comment comment = new Comment();
+            comment.setContent(commentDTO.getContent());
+
+            UserDTO userDTO = commentDTO.getUser();
+            User user = new User();
+            user.setUserId(userDTO.getUserId());
+            // Set other user properties if needed
+
+            comment.setUser(user);
+            comment.setPost(post);
+
+            post.getComments().add(comment);
+            postRepository.save(post);
+
+            return commentDTO;
+        } else {
+            throw new EntityNotFoundException("Post not found");
+        }
+    }
+
 }
 
