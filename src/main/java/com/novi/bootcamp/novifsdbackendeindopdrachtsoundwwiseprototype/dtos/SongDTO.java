@@ -1,5 +1,7 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos;
 
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Song;
+
 public class SongDTO {
     private int songId;
     private String title;
@@ -14,6 +16,15 @@ public class SongDTO {
         this.songId = songId;
         this.title = title;
         this.artist = artist;
+    }
+
+    public static SongDTO convertToDTO(Song song) {
+        SongDTO dto = new SongDTO();
+        dto.setTitle(song.getTitle());
+        dto.setArtist(song.getArtist());
+        // Add any other properties of the SongDTO class that you want to set
+
+        return dto;
     }
 
     // Getters and Setters

@@ -11,18 +11,19 @@ public class File {
     @GeneratedValue
     private int fileId;
     private String fileName;
+    private String fileUrl;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    @JsonIgnore
     private Project project;
 
     public File() {
     }
 
-    public File(int fileId, String fileName, Project project) {
+    public File(int fileId, String fileName, String fileUrl, Project project) {
         this.fileId = fileId;
         this.fileName = fileName;
+        this.fileUrl = fileUrl;
         this.project = project;
     }
 
@@ -42,6 +43,14 @@ public class File {
         this.fileName = fileName;
     }
 
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
     public Project getProject() {
         return project;
     }
@@ -50,4 +59,3 @@ public class File {
         this.project = project;
     }
 }
-

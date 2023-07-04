@@ -60,12 +60,14 @@ public class Project {
     }
 
     //File Items
-    public void addFileItem(File file){
+    public void addFileItem(File file) {
         fileItems.add(file);
+        file.setProject(this); // Set the project for the file
     }
 
-    public void removeFileItem(File file){
+    public void removeFileItem(File file) {
         fileItems.remove(file);
+        file.setProject(null); // Remove the project reference from the file
     }
 
     public List<File> getSongItem(){
@@ -148,5 +150,9 @@ public class Project {
                 song.setArtist(this.projectArtist);
             }
         }
+    }
+
+    public List<File> getFileItems() {
+        return fileItems;
     }
 }

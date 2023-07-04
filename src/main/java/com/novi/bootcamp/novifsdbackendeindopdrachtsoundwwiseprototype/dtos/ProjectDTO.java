@@ -1,7 +1,8 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos;
 
-import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Post;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Song;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.File;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,27 +13,33 @@ public class ProjectDTO {
     private String projectArtist;
     private String projectImage;
     private List<SongDTO> songItems;
-    private List<PostDTO> contentItems;
+    private List<FileDTO> fileItems;
     private List<String> contributors;
     private int userId;
 
     public ProjectDTO() {
         this.songItems = new ArrayList<>();
-        this.contentItems = new ArrayList<>();
+        this.fileItems = new ArrayList<>();
         this.contributors = new ArrayList<>();
     }
 
     public ProjectDTO(int projectId, String projectName, String projectArtist, String projectImage,
-                      List<SongDTO> songItems, List<PostDTO> contentItems, List<String> contributors,
+                      List<SongDTO> songItems, List<File> fileItems, List<String> contributors,
                       int userId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectArtist = projectArtist;
         this.projectImage = projectImage;
         this.songItems = songItems;
-        this.contentItems = contentItems;
+        this.fileItems = new ArrayList<>();
         this.contributors = contributors;
         this.userId = userId;
+
+        if (fileItems != null) {
+            for (File file : fileItems) {
+                this.fileItems.add(new FileDTO(file.getFileName(), file.getFileUrl()));
+            }
+        }
     }
 
     public int getProjectId() {
@@ -75,12 +82,12 @@ public class ProjectDTO {
         this.songItems = songItems;
     }
 
-    public List<PostDTO> getContentItems() {
-        return contentItems;
+    public List<FileDTO> getFileItems() {
+        return fileItems;
     }
 
-    public void setContentItems(List<PostDTO> contentItems) {
-        this.contentItems = contentItems;
+    public void setFileItems(List<FileDTO> fileItems) {
+        this.fileItems = fileItems;
     }
 
     public List<String> getContributors() {
@@ -106,6 +113,22 @@ public class ProjectDTO {
         dto.setProjectArtist(project.getProjectArtist());
         dto.setProjectImage(project.getProjectImage());
         dto.setUserId(project.getUser().getId()); // Set the user ID
+
+        List<SongDTO> songDTOList = new ArrayList<>();
+        for (Song song : project.getSongItems()) {
+            SongDTO songDTO = SongDTO.convertToDTO(song);
+            songDTOList.add(songDTO);
+        }
+        dto.setSongItems(songDTOList);
+
+        List<FileDTO> fileDTOList = new ArrayList<>();
+        for (File file : project.getFileItems()) {
+            FileDTO fileDTO = new FileDTO(file.getFileName(), file.getFileUrl());
+            fileDTOList.add(fileDTO);
+        }
+        dto.setFileItems(fileDTOList);
+
+        dto.setContributors(project.getContributors());
 
         return dto;
     }
