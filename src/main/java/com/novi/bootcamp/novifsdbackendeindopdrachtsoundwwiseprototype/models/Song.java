@@ -18,7 +18,7 @@ public class Song {
     @JsonIgnore
     private Project project;
 
-    public Song(int songId, String title, String artist, Project project) {
+    public Song(int songId, String title, Project project) {
         this.songId = songId;
         this.title = title;
         this.artist = project.getProjectArtist();
