@@ -6,14 +6,19 @@ import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositor
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositories.SongRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SongService {
-    private final SongRepository songRepository;
+    private static SongRepository songRepository;
 
     public SongService(SongRepository songRepository, ProjectRepository projectRepository) {
-        this.songRepository = songRepository;
+        SongService.songRepository = songRepository;
+    }
+
+    public static List<Song> getAllSongs() {
+        return songRepository.findAll();
     }
 
     public SongDTO getSongById(int songId) {

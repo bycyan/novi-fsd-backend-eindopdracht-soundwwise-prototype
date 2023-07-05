@@ -1,10 +1,14 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controllers;
 
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.SongDTO;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Song;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.SongService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 
@@ -12,8 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class SongController {
     private final SongService songService;
 
-    public SongController(SongService songService) {
+    public SongController(SongService songService, ProjectService projectService) {
         this.songService = songService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Song>> getAllSongs() {
+        List<Song> songs = SongService.getAllSongs();
+        return ResponseEntity.ok(songs);
     }
 
     @GetMapping("/{songId}")

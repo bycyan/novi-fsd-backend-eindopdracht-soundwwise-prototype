@@ -1,7 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int projectId;
+
     private String projectName;
     private String projectArtist;
     private String projectImage;
@@ -46,9 +46,13 @@ public class Project {
     }
 
     // Song Items
-
     public void addSongItem(Song song) {
         songItems.add(song);
+    }
+
+    public void addSongToProject(Song song) {
+        songItems.add(song);
+        song.setProject(this); // Set the project for the song
     }
 
     public void removeSongItem(Song song) {
@@ -59,7 +63,7 @@ public class Project {
         return songItems;
     }
 
-    //File Items
+    // File Items
     public void addFileItem(File file) {
         fileItems.add(file);
         file.setProject(this); // Set the project for the file
@@ -70,12 +74,11 @@ public class Project {
         file.setProject(null); // Remove the project reference from the file
     }
 
-    public List<File> getSongItem(){
+    public List<File> getFileItems() {
         return fileItems;
     }
 
     // Contributors
-
     public void addContributor(String contributor) {
         contributors.add(contributor);
     }
@@ -89,7 +92,6 @@ public class Project {
     }
 
     // Getters and Setters
-
     public int getProjectId() {
         return projectId;
     }
@@ -152,7 +154,4 @@ public class Project {
         }
     }
 
-    public List<File> getFileItems() {
-        return fileItems;
-    }
 }
