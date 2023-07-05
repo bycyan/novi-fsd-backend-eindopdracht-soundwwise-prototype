@@ -1,6 +1,7 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controllers;
 
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Song;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.User;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
 
@@ -29,6 +30,7 @@ public class ProjectController {
         List<Project> projects = projectService.getAllProjects();
         return ResponseEntity.ok(projects);
     }
+
     @GetMapping("/{projectId}")
     public ResponseEntity<Optional<Project>> getProjectById(@PathVariable int projectId) {
         Optional<Project> project = projectService.getProjectById(projectId);
@@ -37,11 +39,13 @@ public class ProjectController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping
     public ResponseEntity<Project> createProject(@RequestBody Project project) {
         Project createdProject = projectService.createProject(project);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProject);
     }
+
     @PutMapping("/{projectId}")
     public ResponseEntity<Project> updateProject(@RequestBody Project project) {
         Project updatedProject = projectService.updateProject(project);
@@ -50,6 +54,7 @@ public class ProjectController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @DeleteMapping("/{projectId}")
     public ResponseEntity<Void> deleteProject(@PathVariable Project project) {
         boolean deleted = projectService.deleteProject(project);
@@ -70,6 +75,7 @@ public class ProjectController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping("/{projectId}/contributors")
     public ResponseEntity<Project> addContributorToProject(
             @PathVariable int projectId,
@@ -78,12 +84,18 @@ public class ProjectController {
         Optional<Project> optionalProject = projectService.getProjectById(projectId);
         if (optionalProject.isPresent()) {
             Project project = optionalProject.get();
-            project.addContributor(String.valueOf(contributor));
+
+            // Extract first and last name from the contributor
+            String contributorName = contributor.getFirstName() + " " + contributor.getLastName();
+
+            project.addContributor(contributorName);
+
             Project updatedProject = projectService.updateProject(project);
             return ResponseEntity.ok(updatedProject);
         }
         return ResponseEntity.notFound().build();
     }
+
 
     // Remove a contributor from a project
     @DeleteMapping("/{projectId}/contributors/{contributorName}")

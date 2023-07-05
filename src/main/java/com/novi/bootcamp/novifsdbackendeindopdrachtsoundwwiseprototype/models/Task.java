@@ -31,6 +31,7 @@ public class Task {
         this.dueDate = dueDate;
     }
 
+    // Getters and setters
     public int getTaskId() {
         return taskId;
     }

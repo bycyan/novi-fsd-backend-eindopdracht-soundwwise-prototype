@@ -48,20 +48,25 @@ public class Project {
     // Song Items
     public void addSongItem(Song song) {
         songItems.add(song);
+        song.setProject(this);
+        song.setArtist(this.projectArtist);
     }
 
-    public void addSongToProject(Song song) {
-        songItems.add(song);
-        song.setProject(this); // Set the project for the song
-    }
+//    public void addSongToProject(Song song) {
+//        songItems.add(song);
+//        song.setProject(this); // Set the project for the song
+//        song.setArtist(this.projectArtist); // Set the artist for the song
+//    }
 
     public void removeSongItem(Song song) {
         songItems.remove(song);
+        song.setProject(null);
     }
 
     public List<Song> getSongItems() {
         return songItems;
     }
+
 
     // File Items
     public void addFileItem(File file) {
@@ -132,26 +137,29 @@ public class Project {
         this.user = user;
     }
 
-    public void setSongItems(List<Song> songItems) {
-        this.songItems = songItems;
-        setProjectIdForSongs();
-        updateSongArtists();
-    }
 
-    private void setProjectIdForSongs() {
-        if (songItems != null) {
-            for (Song song : songItems) {
-                song.setProject(this);
-            }
-        }
-    }
+    ////
 
-    private void updateSongArtists() {
-        if (songItems != null) {
-            for (Song song : songItems) {
-                song.setArtist(this.projectArtist);
-            }
-        }
-    }
+//    public void setSongItems(List<Song> songItems) {
+//        this.songItems = songItems;
+//        setProjectIdForSongs();
+//        updateSongArtists();
+//    }
+//
+//    private void setProjectIdForSongs() {
+//        if (songItems != null) {
+//            for (Song song : songItems) {
+//                song.setProject(this);
+//            }
+//        }
+//    }
+//
+//    private void updateSongArtists() {
+//        if (songItems != null) {
+//            for (Song song : songItems) {
+//                song.setArtist(this.projectArtist);
+//            }
+//        }
+//    }
 
 }

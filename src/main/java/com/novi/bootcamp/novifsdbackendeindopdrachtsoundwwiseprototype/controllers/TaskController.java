@@ -16,13 +16,9 @@ import java.util.List;
 @RequestMapping("/tasks")
 public class TaskController {
     private final TaskService taskService;
-    private final UserService userService;
-    private final ProjectService projectService;
 
-    public TaskController(TaskService taskService, UserService userService, ProjectService projectService){
+    public TaskController(TaskService taskService){
         this.taskService = taskService;
-        this.userService = userService;
-        this.projectService = projectService;
     }
 
     @PostMapping
@@ -30,20 +26,6 @@ public class TaskController {
         Task createdTask = taskService.createTask(task);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
-
-//    @PostMapping
-//    public ResponseEntity<Task> createTask(@RequestBody Task task, @RequestParam int userId, @RequestParam int projectId) {
-//        User user = userService.getUserById(userId);
-//        Project project = projectService.getProjectById(projectId);
-//        if (user != null && project != null) {
-//            task.setUser(user);
-//            task.setProject(project);
-//            Task createdTask = taskService.createTask(task);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
