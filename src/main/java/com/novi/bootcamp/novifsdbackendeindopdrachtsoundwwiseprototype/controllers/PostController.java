@@ -1,6 +1,7 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controllers;
 
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.PostDTO;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Comment;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Post;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,15 @@ public class PostController {
         Optional<Post> post = postService.getPostById(id);
         return post.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<Comment>> getCommentsForPost(@PathVariable("postId") Long postId) {
+        List<Comment> comments = postService.getCommentsForPost(postId);
+        if (comments.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @PostMapping

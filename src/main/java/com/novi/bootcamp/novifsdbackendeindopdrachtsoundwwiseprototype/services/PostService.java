@@ -4,6 +4,7 @@ import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.Post
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Comment;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Post;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.User;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositories.CommentRepository;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositories.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<Post> getAllPosts() {
@@ -64,5 +67,17 @@ public class PostService {
         } else {
             throw new EntityNotFoundException("Post not found");
         }
+    }
+
+    public List<Comment> getCommentsForPost(Long postId) {
+        // Retrieve the post
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            // Post not found
+            throw new IllegalArgumentException("Post not found");
+        }
+
+        // Retrieve comments for the post
+        return post.getComments();
     }
 }

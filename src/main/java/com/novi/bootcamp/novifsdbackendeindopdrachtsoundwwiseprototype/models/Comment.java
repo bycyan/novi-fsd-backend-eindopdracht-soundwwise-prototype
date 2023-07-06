@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -12,6 +13,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @JsonBackReference
     private Post post;
 
     @Column(nullable = false)

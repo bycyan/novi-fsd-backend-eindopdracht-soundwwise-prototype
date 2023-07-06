@@ -1,6 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +17,7 @@ public class Song {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonBackReference
     private Project project;
 
     public Song() {

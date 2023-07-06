@@ -1,5 +1,7 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @Column(nullable = false)
@@ -26,6 +29,7 @@ public class Post {
     private int likes;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    @JsonManagedReference
     private List<Comment> comments;
 
     public Post() {

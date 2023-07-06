@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,9 +23,11 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Project> showcaseProjects;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Project> projects;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Task> tasks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

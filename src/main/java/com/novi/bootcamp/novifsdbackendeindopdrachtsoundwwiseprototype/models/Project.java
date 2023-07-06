@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -19,9 +20,11 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "project")
+    @JsonManagedReference
     private List<Song> songItems;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "project")
