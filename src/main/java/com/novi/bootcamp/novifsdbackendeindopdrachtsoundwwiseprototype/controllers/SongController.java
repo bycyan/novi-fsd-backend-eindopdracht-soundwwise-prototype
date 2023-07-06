@@ -2,9 +2,9 @@ package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controll
 
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Song;
-import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Task;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.SongService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,20 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
-
 @RequestMapping("/songs")
 public class SongController {
     private final SongService songService;
 
+    @Autowired
     public SongController(SongService songService) {
         this.songService = songService;
-    }
-
-    @PostMapping
-    public ResponseEntity<Song> createSong(@RequestBody Song song) {
-        Song createdSong = songService.createSong(song);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSong);
     }
 
     @GetMapping
@@ -42,6 +37,12 @@ public class SongController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<Song> createSong(@RequestBody Song song) {
+        Song createdSong = songService.createSong(song);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSong);
     }
 
     @PutMapping("/{songId}")

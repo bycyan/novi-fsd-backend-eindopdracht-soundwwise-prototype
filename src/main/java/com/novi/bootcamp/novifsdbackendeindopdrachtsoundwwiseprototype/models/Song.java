@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -55,6 +56,12 @@ public class Song {
     }
 
     public void setArtist(String artist) {
+        // Check if the project is set
+        if (project != null) {
+            // Set the artist of the project
+            project.setProjectArtist(artist);
+        }
+        // Set the artist of the song
         this.artist = artist;
     }
 
@@ -81,5 +88,6 @@ public class Song {
     public void setProject(Project project) {
         this.project = project;
     }
+
 }
 

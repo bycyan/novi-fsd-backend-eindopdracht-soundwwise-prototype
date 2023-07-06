@@ -116,10 +116,17 @@ public class ProjectDTO {
 
         List<SongDTO> songDTOList = new ArrayList<>();
         for (Song song : project.getSongItems()) {
-            SongDTO songDTO = SongDTO.convertToDTO(song);
+            SongDTO songDTO = new SongDTO(
+                    song.getTitle(),
+                    song.getArtist(),
+                    song.getFilename(),
+                    song.getFilePath(),
+                    song.getProject()
+            );
             songDTOList.add(songDTO);
         }
         dto.setSongItems(songDTOList);
+
 
         List<FileDTO> fileDTOList = new ArrayList<>();
         for (File file : project.getFileItems()) {

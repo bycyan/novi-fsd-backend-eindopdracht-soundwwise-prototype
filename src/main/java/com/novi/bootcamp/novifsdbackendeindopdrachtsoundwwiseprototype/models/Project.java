@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class Project {
     private List<Song> songItems;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "project")
+    @JsonManagedReference
     private List<File> fileItems;
 
     @ElementCollection
@@ -52,11 +54,11 @@ public class Project {
         song.setArtist(this.projectArtist);
     }
 
-//    public void addSongToProject(Song song) {
-//        songItems.add(song);
-//        song.setProject(this); // Set the project for the song
-//        song.setArtist(this.projectArtist); // Set the artist for the song
-//    }
+    public void addSongToProject(Song song) {
+        songItems.add(song);
+        song.setProject(this); // Set the project for the song
+        song.setArtist(this.projectArtist); // Set the artist for the song
+    }
 
     public void removeSongItem(Song song) {
         songItems.remove(song);
@@ -138,7 +140,6 @@ public class Project {
     }
 
 
-    ////
 
 //    public void setSongItems(List<Song> songItems) {
 //        this.songItems = songItems;
