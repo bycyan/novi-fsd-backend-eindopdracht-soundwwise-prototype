@@ -1,94 +1,64 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype;
 
-import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.File;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
-import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Song;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.User;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.repositories.ProjectRepository;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 public class ProjectTest {
 
-    private Project project;
+    private ProjectRepository projectRepository;
+    private ProjectService projectService;
 
     @BeforeEach
-    public void setUp() {
-        project = new Project();
+    public void setup() {
+        projectRepository = Mockito.mock(ProjectRepository.class);
+        projectService = new ProjectService(projectRepository);
     }
 
     @Test
-    public void testAddSongItem() {
-        Song song = new Song();
-        project.addSongItem(song);
+    public void testAddContributorToProject_Success() {
+        // Arrange
+        int projectId = 1;
+        User contributor = new User(); // Replace with your User implementation
 
-        List<Song> songItems = project.getSongItems();
-        assertTrue(songItems.contains(song));
+        Project existingProject = new Project();
+        existingProject.setProjectId(projectId);
+
+        Mockito.when(projectRepository.findById(projectId)).thenReturn(Optional.of(existingProject));
+        Mockito.when(projectRepository.save(Mockito.any(Project.class))).thenReturn(existingProject);
+
+        // Act
+        Project result = projectService.addContributorToProject(projectId, (org.apache.catalina.User) contributor);
+
+        // Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(1, result.getContributors().size());
+        Assertions.assertEquals(String.valueOf(contributor), result.getContributors().get(0));
+        Mockito.verify(projectRepository, Mockito.times(1)).findById(projectId);
+        Mockito.verify(projectRepository, Mockito.times(1)).save(existingProject);
     }
 
     @Test
-    public void testRemoveSongItem() {
-        Song song = new Song();
-        project.addSongItem(song);
-        project.removeSongItem(song);
+    public void testAddContributorToProject_ProjectNotFound() {
+        // Arrange
+        int projectId = 1;
+        User contributor = new User(); // Replace with your User implementation
 
-        List<Song> songItems = project.getSongItems();
-        assertFalse(songItems.contains(song));
-    }
+        Mockito.when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
-    @Test
-    public void testAddFileItem() {
-        File file = new File();
-        project.addFileItem(file);
+        // Act
+        Project result = projectService.addContributorToProject(projectId, (org.apache.catalina.User) contributor);
 
-        List<File> fileItems = project.getFileItems();
-        assertTrue(fileItems.contains(file));
-    }
-
-    @Test
-    public void testRemoveFileItem() {
-        File file = new File();
-        project.addFileItem(file);
-        project.removeFileItem(file);
-
-        List<File> fileItems = project.getFileItems();
-        assertFalse(fileItems.contains(file));
-    }
-
-    @Test
-    public void testAddContributor() {
-        String contributor = "John Doe";
-        project.addContributor(contributor);
-
-        List<String> contributors = project.getContributors();
-        assertTrue(contributors.contains(contributor));
-    }
-
-    @Test
-    public void testRemoveContributor() {
-        String contributor = "John Doe";
-        project.addContributor(contributor);
-        project.removeContributor(contributor);
-
-        List<String> contributors = project.getContributors();
-        assertFalse(contributors.contains(contributor));
-    }
-
-    @Test
-    public void testSetSongItems() {
-        List<Song> songItems = new ArrayList<>();
-        Song song1 = new Song();
-        Song song2 = new Song();
-        songItems.add(song1);
-        songItems.add(song2);
-
-        project.setSongItems(songItems);
-
-        List<Song> updatedSongItems = project.getSongItems();
-        assertTrue(updatedSongItems.contains(song1));
-        assertTrue(updatedSongItems.contains(song2));
+        // Assert
+        Assertions.assertNull(result);
+        Mockito.verify(projectRepository, Mockito.times(1)).findById(projectId);
+        Mockito.verify(projectRepository, Mockito.never()).save(Mockito.any(Project.class));
     }
 }
-

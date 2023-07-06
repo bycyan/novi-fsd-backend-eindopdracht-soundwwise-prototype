@@ -1,16 +1,20 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controllers;
 
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos.SongDTO;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Song;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -23,11 +27,36 @@ public class SongController {
         this.songService = songService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Song>> getAllSongs() {
-        List<Song> songs = songService.getAllSongs();
-        return ResponseEntity.ok(songs);
+//    @GetMapping
+//    public ResponseEntity<List<Song>> getAllSongs() {
+//        List<Song> songs = songService.getAllSongs();
+//        return ResponseEntity.ok(songs);
+//    }
+
+    @GetMapping()
+    public ResponseEntity<List<SongDTO>> getAllSongs() {
+        List<Song> songs = SongService.getAllSongs();
+        List<SongDTO> songDTOs = new ArrayList<>();
+
+        HttpHeaders responseHeaders = null;
+        for (Song song : songs) {
+            SongDTO songDTO = new SongDTO();
+            songDTO.setSongId(song.getSongId());
+            songDTO.setTitle(song.getTitle());
+            songDTO.setArtist(song.getArtist());
+            songDTO.setFilename(song.getFilename());
+            songDTO.setFilePath(song.getFilePath());
+
+            // Set the project ID in the response headers
+            responseHeaders = new HttpHeaders();
+            responseHeaders.add("project-id", String.valueOf(song.getProject().getProjectId()));
+
+            songDTOs.add(songDTO);
+        }
+
+        return ResponseEntity.ok().headers(responseHeaders).body(songDTOs);
     }
+
 
     @GetMapping("/{songId}")
     public ResponseEntity<Song> getSongById(@PathVariable int songId){
