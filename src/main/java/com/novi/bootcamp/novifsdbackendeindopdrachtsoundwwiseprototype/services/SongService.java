@@ -20,6 +20,10 @@ public class SongService {
         return songRepository.findAll();
     }
 
+    public static List<Song> getSongsByProjectId(int projectId) {
+        return songRepository.findByProjectProjectId(projectId);
+    }
+
     public Song getSongById(int songId){
         return songRepository.findById(songId).orElse(null);
     }

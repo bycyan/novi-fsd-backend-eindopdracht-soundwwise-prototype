@@ -10,15 +10,19 @@ import java.util.Optional;
 
 @Service
 public class FileService {
-    private final FileRepository fileRepository;
+    private static FileRepository fileRepository;
 
     @Autowired
     public FileService(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
     }
 
-    public List<File> getAllFiles() {
+    public static List<File> getAllFiles() {
         return fileRepository.findAll();
+    }
+
+    public static List<File> getFilesByProjectId(int projectId) {
+        return fileRepository.findByProjectProjectId(projectId);
     }
 
     public Optional<File> getFileById(int fileId) {

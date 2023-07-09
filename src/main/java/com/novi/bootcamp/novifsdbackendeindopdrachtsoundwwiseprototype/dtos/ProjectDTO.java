@@ -37,7 +37,7 @@ public class ProjectDTO {
 
         if (fileItems != null) {
             for (File file : fileItems) {
-                this.fileItems.add(new FileDTO(file.getFileName(), file.getFileUrl()));
+                this.fileItems.add(new FileDTO(file.getFileId(), file.getFileName(), file.getFileUrl()));
             }
         }
     }
@@ -130,7 +130,10 @@ public class ProjectDTO {
 
         List<FileDTO> fileDTOList = new ArrayList<>();
         for (File file : project.getFileItems()) {
-            FileDTO fileDTO = new FileDTO(file.getFileName(), file.getFileUrl());
+            FileDTO fileDTO = new FileDTO(
+                    file.getFileId(),
+                    file.getFileName(),
+                    file.getFileUrl());
             fileDTOList.add(fileDTO);
         }
         dto.setFileItems(fileDTOList);
