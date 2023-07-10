@@ -19,6 +19,7 @@ public class CorsConfig {
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
 
+
         // Set whether credentials (e.g., cookies) are supported
         config.setAllowCredentials(true);
 

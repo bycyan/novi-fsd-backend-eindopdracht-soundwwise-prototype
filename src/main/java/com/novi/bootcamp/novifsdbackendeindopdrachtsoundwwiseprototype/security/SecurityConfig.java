@@ -31,7 +31,7 @@ public class SecurityConfig {
 
                 //create account doesn't require a login, white listing
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**")
+                .requestMatchers("/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

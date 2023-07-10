@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String firstName;
-    private String LastName;
+    private String lastName;
     private String jobDescription;
     private String profileImg;
     private String profileHeader;
@@ -114,11 +114,11 @@ public class User implements UserDetails {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getJobDescription() {
