@@ -31,14 +31,13 @@ public class SecurityConfig {
 
                 //create account doesn't require a login, white listing
                 .authorizeHttpRequests()
-                .requestMatchers("/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                    .requestMatchers("/register", "/authenticate").permitAll()
+                    .anyRequest().authenticated()
+
 
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
                 .authenticationProvider(authenticationProvider)
