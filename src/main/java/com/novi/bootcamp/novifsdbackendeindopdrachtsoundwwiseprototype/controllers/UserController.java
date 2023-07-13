@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controllers;
 
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.User;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,15 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<User> getUserByEmail(@PathVariable String userId) {
+//        User user = userService.getUserByEmail(userId);
+//        if (user != null) {
+//            return ResponseEntity.ok(user);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
