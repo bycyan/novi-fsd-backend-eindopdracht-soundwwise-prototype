@@ -16,7 +16,7 @@ public class SongService {
         SongService.songRepository = songRepository;
     }
 //    private final List<Song> songs = new ArrayList<>();
-    public static List<Song> getAllSongs() {
+    public static List<Song> getAllSongs(int projectId) {
         return songRepository.findAll();
     }
 

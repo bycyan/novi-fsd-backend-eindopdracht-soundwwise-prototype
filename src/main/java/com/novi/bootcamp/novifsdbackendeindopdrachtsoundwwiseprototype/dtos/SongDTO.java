@@ -9,6 +9,7 @@ public class SongDTO {
     private String filename;
     private String filePath;
     private ProjectDTO project;
+    private int projectId; // Add projectId property
 
     // Constructors
 
@@ -21,6 +22,7 @@ public class SongDTO {
         this.filename = filename;
         this.filePath = filePath;
         this.project = ProjectDTO.convertToDTO(project);
+        this.projectId = project.getProjectId(); // Set the projectId
     }
 
     // Getters and Setters
@@ -71,5 +73,13 @@ public class SongDTO {
 
     public void setProject(ProjectDTO project) {
         this.project = project;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 }

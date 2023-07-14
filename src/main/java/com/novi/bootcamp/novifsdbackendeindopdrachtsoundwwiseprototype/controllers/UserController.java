@@ -2,6 +2,7 @@ package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controll
 
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.User;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final ProjectService projectService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ProjectService projectService) {
         this.userService = userService;
+        this.projectService = projectService;
     }
 
     @GetMapping
@@ -25,24 +28,25 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable int userId) {
-        User user = userService.getUserById(userId);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 //    @GetMapping("/{userId}")
-//    public ResponseEntity<User> getUserByEmail(@PathVariable String userId) {
-//        User user = userService.getUserByEmail(userId);
+//    public ResponseEntity<User> getUserById(@PathVariable int userId) {
+//        User user = userService.getUserById(userId);
 //        if (user != null) {
 //            return ResponseEntity.ok(user);
 //        } else {
 //            return ResponseEntity.notFound().build();
 //        }
 //    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String userId) {
+        User user = userService.getUserByEmail(userId);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
@@ -78,4 +82,16 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //projecten
+    @GetMapping("/{userId}/projects")
+    public ResponseEntity<List<Project>> getUserProjects(@PathVariable String userId) {
+        List<Project> projects = projectService.getUserProjects(userId);
+        if (!projects.isEmpty()) {
+            return ResponseEntity.ok(projects);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
