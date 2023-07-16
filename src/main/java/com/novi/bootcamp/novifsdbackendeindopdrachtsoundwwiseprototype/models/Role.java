@@ -1,5 +1,5 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
 public enum Role {
-    USER
+    PROFILE_OWNER, USER
 }

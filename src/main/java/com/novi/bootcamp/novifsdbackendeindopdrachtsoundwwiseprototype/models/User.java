@@ -10,12 +10,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
+//@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
@@ -28,7 +29,10 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     private String jobDescription;
-    private String profileImg;
+
+    @Lob
+    @Column(name = "profile_img")
+    private byte[] profileImg;
     private String profileHeader;
 
     @Enumerated(EnumType.STRING)
@@ -48,12 +52,47 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
+    @OneToOne
+    FileUploadResponse file;
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of(new SimpleGrantedAuthority(role.name()));
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        // Assuming your enum type is called Role and has a PROFILE_OWNER value
+        if (role == Role.PROFILE_OWNER) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_PROFILE_OWNER"));
+        }
+
+        return authorities;
     }
 
+
     //
+
+
+    public User() {
+        this.role = Role.USER; // Set the default role as "user"
+    }
+
+    public void assignProfileOwnerRole() {
+        this.role = Role.PROFILE_OWNER; // Assign "Profile Owner" role
+    }
+
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public String getPassword() {
         return password;
@@ -129,11 +168,11 @@ public class User implements UserDetails {
         this.jobDescription = jobDescription;
     }
 
-    public String getProfileImg() {
+    public byte[] getProfileImg() {
         return profileImg;
     }
 
-    public void setProfileImg(String profileImg) {
+    public void setProfileImg(byte[] profileImg) {
         this.profileImg = profileImg;
     }
 
@@ -179,5 +218,8 @@ public class User implements UserDetails {
 
     public int getId() {
         return userId;
+    }
+
+    public void setFile(FileUploadResponse image) {
     }
 }

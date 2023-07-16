@@ -3,6 +3,8 @@ package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.Optional;
+
 @Entity
 @Table(name = "songs")
 public class Song {
@@ -32,7 +34,6 @@ public class Song {
         this.filePath = filePath;
         this.project = project;
     }
-
 
 
     // Getters and setters

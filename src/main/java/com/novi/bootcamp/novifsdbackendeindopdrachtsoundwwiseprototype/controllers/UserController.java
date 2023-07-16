@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.controllers;
 
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.FileUploadResponse;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.User;
 import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.ProjectService;
@@ -7,6 +8,7 @@ import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.services.
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -93,5 +95,11 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+//    @PostMapping("/{userId}/profile-image")
+//    public void assignImageToUser(@PathVariable("userId") int userId, @RequestBody MultipartFile file){
+//        FileUploadResponse image = imageController.singleFileUpload(file);
+//        userService.assignImageToUser(image.getFileName(), userId);
+//    }
 
 }

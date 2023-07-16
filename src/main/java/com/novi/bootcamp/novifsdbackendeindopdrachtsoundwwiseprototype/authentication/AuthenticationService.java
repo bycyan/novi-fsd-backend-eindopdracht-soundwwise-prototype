@@ -45,6 +45,12 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(); //todo: catch exception later on
 
+
+        // Assign "Profile Owner" role after authentication
+        user.setRole(Role.PROFILE_OWNER);
+        userRepository.save(user);
+
+
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
