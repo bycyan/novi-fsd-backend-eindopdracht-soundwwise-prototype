@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.novi.bootcamp</groupId>
 	<artifactId>novi-fsd-backend-eindopdracht-soundwwise-prototype</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>novi-fsd-backend-eindopdracht-soundwwise-prototype</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Novi FSD Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

@@ -32,8 +32,8 @@ public class SecurityConfig {
                 //create account doesn't require a login, white listing
                 .authorizeHttpRequests()
                     .requestMatchers("/register", "/authenticate").permitAll()
-//                    .requestMatchers("/profile/**").authenticated()
-                    .requestMatchers("/profile/**").hasRole("PROFILE_OWNER")
+                    .requestMatchers("/profile/**").authenticated()
+//                    .requestMatchers("/profile/**").hasRole("PROFILE_OWNER")
                     .anyRequest().authenticated()
 
 

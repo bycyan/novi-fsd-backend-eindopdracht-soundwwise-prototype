@@ -16,7 +16,7 @@ import java.util.List;
 
 @Data
 @Builder
-//@NoArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
@@ -76,22 +76,22 @@ public class User implements UserDetails {
     //
 
 
-    public User() {
-        this.role = Role.USER; // Set the default role as "user"
-    }
+//    public User() {
+//        this.role = Role.USER; // Set the default role as "user"
+//    }
 
-    public void assignProfileOwnerRole() {
-        this.role = Role.PROFILE_OWNER; // Assign "Profile Owner" role
-    }
-
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+//    public void assignProfileOwnerRole() {
+//        this.role = Role.PROFILE_OWNER; // Assign "Profile Owner" role
+//    }
+//
+//
+//    public Role getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(Role role) {
+//        this.role = role;
+//    }
 
     @Override
     public String getPassword() {

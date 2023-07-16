@@ -67,7 +67,7 @@ public class UserController {
             user.setJobDescription(updatedUser.getJobDescription());
             user.setProfileImg(updatedUser.getProfileImg());
             user.setProfileHeader(updatedUser.getProfileHeader());
-            userService.updateUser(user);
+            userService.updateUser(user); // Call the updateUser method to persist the changes
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.notFound().build();

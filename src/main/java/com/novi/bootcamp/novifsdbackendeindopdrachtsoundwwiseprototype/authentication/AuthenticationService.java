@@ -47,8 +47,8 @@ public class AuthenticationService {
 
 
         // Assign "Profile Owner" role after authentication
-        user.setRole(Role.PROFILE_OWNER);
-        userRepository.save(user);
+//        user.setRole(Role.PROFILE_OWNER);
+//        userRepository.save(user);
 
 
         var jwtToken = jwtService.generateToken(user);
