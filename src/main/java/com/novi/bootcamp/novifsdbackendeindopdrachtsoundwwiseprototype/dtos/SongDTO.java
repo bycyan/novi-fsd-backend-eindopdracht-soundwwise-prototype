@@ -1,42 +1,32 @@
-package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
+package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models.Project;
 
-import java.util.Optional;
-
-@Entity
-@Table(name = "songs")
-public class Song {
-
-    @Id
-    @GeneratedValue
+public class SongDTO {
     private int songId;
     private String title;
     private String artist;
     private String filename;
     private String filePath;
+    private ProjectDTO project;
+    private int projectId; // Add projectId property
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    @JsonBackReference
-    private Project project;
+    // Constructors
 
-    public Song() {
-
+    public SongDTO() {
     }
 
-    public Song(int songId, String title, Project project, String filename, String filePath ) {
-        this.songId = songId;
+    public SongDTO(String title, String artist, String filename, String filePath, Project project) {
         this.title = title;
         this.artist = project.getProjectArtist();
         this.filename = filename;
         this.filePath = filePath;
-        this.project = project;
+        this.project = ProjectDTO.convertToDTO(project);
+        this.projectId = project.getProjectId(); // Set the projectId
     }
 
+    // Getters and Setters
 
-    // Getters and setters
     public int getSongId() {
         return songId;
     }
@@ -58,12 +48,6 @@ public class Song {
     }
 
     public void setArtist(String artist) {
-        // Check if the project is set
-        if (project != null) {
-            // Set the artist of the project
-            project.setProjectArtist(artist);
-        }
-        // Set the artist of the song
         this.artist = artist;
     }
 
@@ -83,13 +67,19 @@ public class Song {
         this.filePath = filePath;
     }
 
-    public Project getProject() {
+    public ProjectDTO getProject() {
         return project;
     }
 
-    public void setProject(Project project) {
+    public void setProject(ProjectDTO project) {
         this.project = project;
     }
 
-}
+    public int getProjectId() {
+        return projectId;
+    }
 
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+}

@@ -1,48 +1,128 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
     private String email;
     private String password;
     private String firstName;
-    private String LastName;
+    private String lastName;
     private String jobDescription;
-    private String profileImg;
+
+    @Lob
+    @Column(name = "profile_img")
+    private byte[] profileImg;
     private String profileHeader;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<Project> showcaseProjects;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Project> projects;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Task> tasks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
+    @OneToOne
+    FileUploadResponse file;
 
-    public User() {
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of(new SimpleGrantedAuthority(role.name()));
+//    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        // Assuming your enum type is called Role and has a PROFILE_OWNER value
+        if (role == Role.PROFILE_OWNER) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_PROFILE_OWNER"));
+        }
+
+        return authorities;
     }
 
-    public User(int userId, String email, String password, String firstName, String lastName, String jobDescription, String profileImg, String profileHeader, List<Project> showcaseProjects, List<Task> tasks, List<Post> posts) {
-        this.userId = userId;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        LastName = lastName;
-        this.jobDescription = jobDescription;
-        this.profileImg = profileImg;
-        this.profileHeader = profileHeader;
-        this.showcaseProjects = showcaseProjects;
-        this.tasks = tasks;
-        this.posts = posts;
+
+    //
+
+
+//    public User() {
+//        this.role = Role.USER; // Set the default role as "user"
+//    }
+
+//    public void assignProfileOwnerRole() {
+//        this.role = Role.PROFILE_OWNER; // Assign "Profile Owner" role
+//    }
+//
+//
+//    public Role getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(Role role) {
+//        this.role = role;
+//    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+    //
 
     public int getUserId() {
         return userId;
@@ -60,10 +140,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -77,11 +153,11 @@ public class User {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getJobDescription() {
@@ -92,11 +168,11 @@ public class User {
         this.jobDescription = jobDescription;
     }
 
-    public String getProfileImg() {
+    public byte[] getProfileImg() {
         return profileImg;
     }
 
-    public void setProfileImg(String profileImg) {
+    public void setProfileImg(byte[] profileImg) {
         this.profileImg = profileImg;
     }
 
@@ -116,6 +192,14 @@ public class User {
         this.showcaseProjects = showcaseProjects;
     }
 
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
@@ -130,5 +214,12 @@ public class User {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public int getId() {
+        return userId;
+    }
+
+    public void setFile(FileUploadResponse image) {
     }
 }

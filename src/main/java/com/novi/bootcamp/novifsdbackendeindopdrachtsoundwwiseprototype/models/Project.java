@@ -1,7 +1,8 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,75 +13,82 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int projectId;
+
     private String projectName;
     private String projectArtist;
     private String projectImage;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
-    @ManyToMany
-    @JoinTable(name = "user_project",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
-
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "project")
+    @JsonManagedReference
     private List<Song> songItems;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<ContentItem> contentItems;
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "project")
+    @JsonManagedReference
+    private List<File> fileItems;
 
     @ElementCollection
     private final List<String> contributors;
 
-    public Project(){
+    public Project() {
+        this.fileItems = new ArrayList<>();
         this.songItems = new ArrayList<>();
-        this.contentItems = new ArrayList<>();
         this.contributors = new ArrayList<>();
     }
 
-    public Project(int projectId, String projectName, String projectArtist, String projectImage) {
-        this.projectId = projectId;
+    public Project(String projectName, String projectArtist, String projectImage, User user, List<File> fileItems) {
         this.projectName = projectName;
         this.projectArtist = projectArtist;
         this.projectImage = projectImage;
+        this.user = user;
+        this.fileItems = new ArrayList<>();
         this.songItems = new ArrayList<>();
-        this.contentItems = new ArrayList<>();
         this.contributors = new ArrayList<>();
     }
 
     // Song Items
-
     public void addSongItem(Song song) {
         songItems.add(song);
+        song.setProject(this);
+        song.setArtist(this.projectArtist);
+    }
+
+    public void addSongToProject(Song song) {
+        songItems.add(song);
+        song.setProject(this); // Set the project for the song
+        song.setArtist(this.projectArtist); // Set the artist for the song
     }
 
     public void removeSongItem(Song song) {
         songItems.remove(song);
+        song.setProject(null);
     }
 
     public List<Song> getSongItems() {
         return songItems;
     }
 
-    // Content Items
 
-    public void addContentItem(ContentItem contentItem) {
-        contentItems.add(contentItem);
+    // File Items
+    public void addFileItem(File file) {
+        fileItems.add(file);
+        file.setProject(this); // Set the project for the file
     }
 
-    public void removeContentItem(ContentItem contentItem) {
-        contentItems.remove(contentItem);
+    public void removeFileItem(File file) {
+        fileItems.remove(file);
+        file.setProject(null); // Remove the project reference from the file
     }
 
-    public List<ContentItem> getContentItems() {
-        return contentItems;
+    public List<File> getFileItems() {
+        return fileItems;
     }
 
     // Contributors
-
     public void addContributor(String contributor) {
         contributors.add(contributor);
     }
@@ -94,7 +102,6 @@ public class Project {
     }
 
     // Getters and Setters
-
     public int getProjectId() {
         return projectId;
     }
@@ -127,39 +134,36 @@ public class Project {
         this.projectImage = projectImage;
     }
 
-    // Inner class: ContentItem
-    @Entity
-    @Table(name = "content_items")
-    public static class ContentItem {
-        @Id
-        private int contentItemId;
-        private String contentItemName;
-
-        public ContentItem(int contentItemId, String contentItemName) {
-            this.contentItemId = contentItemId;
-            this.contentItemName = contentItemName;
-        }
-
-        public ContentItem() {
-
-        }
-
-        // ContentItem getters and setters
-
-        public int getContentItemId() {
-            return contentItemId;
-        }
-
-        public void setContentItemId(int contentItemId) {
-            this.contentItemId = contentItemId;
-        }
-
-        public String getContentItemName() {
-            return contentItemName;
-        }
-
-        public void setContentItemName(String contentItemName) {
-            this.contentItemName = contentItemName;
-        }
+    public User getUser() {
+        return user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
+
+//    public void setSongItems(List<Song> songItems) {
+//        this.songItems = songItems;
+//        setProjectIdForSongs();
+//        updateSongArtists();
+//    }
+//
+//    private void setProjectIdForSongs() {
+//        if (songItems != null) {
+//            for (Song song : songItems) {
+//                song.setProject(this);
+//            }
+//        }
+//    }
+//
+//    private void updateSongArtists() {
+//        if (songItems != null) {
+//            for (Song song : songItems) {
+//                song.setArtist(this.projectArtist);
+//            }
+//        }
+//    }
+
 }

@@ -1,5 +1,6 @@
 package com.novi.bootcamp.novifsdbackendeindopdrachtsoundwwiseprototype.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -16,9 +17,10 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
-    @ManyToOne
+    @ManyToOne (optional = true)
     @JoinColumn(name = "project_id")
     private Project project;
 
@@ -31,6 +33,7 @@ public class Task {
         this.dueDate = dueDate;
     }
 
+    // Getters and setters
     public int getTaskId() {
         return taskId;
     }
